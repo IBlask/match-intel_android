@@ -36,37 +36,10 @@ class MatchViewModel @Inject constructor(
             try {
                 _point.value = api.addPoint(matchId, scoringPlayerUsername)
 
-                val p1Raw = _point.value!!.player1Points.toInt()
-                val p2Raw = _point.value!!.player2Points.toInt()
-
-                val p1Display: String
-                val p2Display: String
+                val p1Display = _point.value!!.player1Points
+                val p2Display = _point.value!!.player2Points
 
                 if (_point.value!!.player1Games != 6 || _point.value!!.player1Games != 6) {
-                    p1Display = when (p1Raw) {
-                        0 -> "0"
-                        1 -> "15"
-                        2 -> "30"
-                        3 -> "40"
-                        else -> {
-                            if (p1Raw == p2Raw) "40"
-                            else if (p1Raw > p2Raw) "Ad"
-                            else "40"
-                        }
-                    }
-
-                    p2Display = when (p2Raw) {
-                        0 -> "0"
-                        1 -> "15"
-                        2 -> "30"
-                        3 -> "40"
-                        else -> {
-                            if (p1Raw == p2Raw) "40"
-                            else if (p2Raw > p1Raw) "Ad"
-                            else "40"
-                        }
-                    }
-
                     _point.value = _point.value!!.copy(
                         player1Points = p1Display,
                         player2Points = p2Display
