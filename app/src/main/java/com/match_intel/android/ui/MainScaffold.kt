@@ -1,6 +1,7 @@
 package com.match_intel.android.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,16 +16,18 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Place
+import androidx.compose.material3.Divider
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,12 +36,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.match_intel.android.R
+import com.match_intel.android.ui.page.HomePage
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,32 +62,41 @@ fun MainScaffold(onLogout: () -> Unit) {
 
     Scaffold(
         topBar = {
-            Row(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextField(
-                    value = searchText,
-                    onValueChange = { searchText = it },
+            Column {
+                Row(
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 4.dp)
-                        .height(56.dp),
-                    shape = CircleShape,
-                    placeholder = { Text(text = "Search...") }
-                )
-                IconButton(
-                    onClick = { /* TODO: Open profile/settings */ },
-                    modifier = Modifier.padding(4.dp)
+                        .padding(8.dp)
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "My Profile",
-                        modifier = Modifier.size(48.dp)
+                    TextField(
+                        value = searchText,
+                        onValueChange = { searchText = it },
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 4.dp)
+                            .height(56.dp),
+                        shape = CircleShape,
+                        placeholder = { Text(text = "Search...") },
+                        colors = TextFieldDefaults.colors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                            errorIndicatorColor = Color.Transparent
+                        )
                     )
+                    IconButton(
+                        onClick = { /* TODO: Open profile/settings */ },
+                        modifier = Modifier.padding(4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AccountCircle,
+                            contentDescription = "My Profile",
+                            modifier = Modifier.size(48.dp)
+                        )
+                    }
                 }
+                HorizontalDivider()
             }
         },
         bottomBar = {
@@ -139,10 +153,13 @@ fun MainScaffold(onLogout: () -> Unit) {
                 .padding(innerPadding)
         ) { page ->
             Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
+                Modifier.fillMaxSize()
             ) {
-                Text(text = pages[page].first, style = MaterialTheme.typography.headlineMedium)
+                when(page) {
+                    0 -> Text("Clubs Page")
+                    1 -> HomePage()
+                    2 -> Text("Tournaments Page")
+                }
             }
         }
     }

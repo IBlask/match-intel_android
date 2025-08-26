@@ -11,7 +11,7 @@ import com.match_intel.android.viewmodel.AuthViewModel
 @Composable
 fun NavGraph(authViewModel: AuthViewModel) {
     val navController = rememberNavController()
-    val startDestination = if (authViewModel.token == null) "main" else "login"
+    val startDestination = if (authViewModel.token != null) "main" else "login"
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable("login") {
