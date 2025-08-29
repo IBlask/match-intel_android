@@ -1,5 +1,7 @@
 package com.match_intel.android.data.api
 
+import com.match_intel.android.data.dto.CommentDto
+import com.match_intel.android.data.dto.LikeResponse
 import com.match_intel.android.data.dto.PointDto
 import com.match_intel.android.data.dto.MatchDto
 import com.match_intel.android.data.dto.NewMatchDto
@@ -35,4 +37,19 @@ interface MatchService {
         @Query("matchId") matchId: String,
         @Query("scoringPlayerUsername") scoringPlayerUsername: String,
     ): PointDto
+
+    @POST("matches/like")
+    suspend fun likeMatch(@Query("matchId") matchId: String): LikeResponse
+
+    @GET("matches/likes_list")
+    suspend fun getLikesList(@Query("matchId") matchId: String): List<UserDto>
+
+    @GET("matches/comments_list/{matchId}")
+    suspend fun getCommentsList(@Path("matchId") matchId: String): List<CommentDto>
+
+    @POST("matches/comment/{matchId}")
+    suspend fun commentMatch(
+        @Path("matchId") matchId: String,
+        @Query("comment") comment: String
+    ): CommentDto
 }

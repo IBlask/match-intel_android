@@ -18,5 +18,8 @@ data class MatchDto(
     val visibility: String,
     val finished: Boolean,
     val player1Efficiency: Int?,
-    val player2Efficiency: Int?
+    val player2Efficiency: Int?,
+    val numberOfComments: Int,
+    val numberOfLikes: Int,
+    val likedByUser: Boolean,
 )

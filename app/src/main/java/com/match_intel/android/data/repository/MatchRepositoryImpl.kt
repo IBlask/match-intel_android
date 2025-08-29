@@ -1,6 +1,8 @@
 package com.match_intel.android.data.repository
 
 import com.match_intel.android.data.api.MatchService
+import com.match_intel.android.data.dto.CommentDto
+import com.match_intel.android.data.dto.LikeResponse
 import com.match_intel.android.data.dto.MatchDto
 import com.match_intel.android.data.dto.UserDto
 import javax.inject.Inject
@@ -25,5 +27,21 @@ class MatchRepositoryImpl @Inject constructor (
 
     override suspend fun sendFollowRequest(username: String) {
         return matchService.sendFollowRequest(username)
+    }
+
+    override suspend fun likeMatch(matchId: String): LikeResponse {
+        return matchService.likeMatch(matchId)
+    }
+
+    override suspend fun getLikesList(matchId: String): List<UserDto> {
+        return matchService.getLikesList(matchId)
+    }
+
+    override suspend fun getCommentsList(matchId: String): List<CommentDto> {
+        return matchService.getCommentsList(matchId)
+    }
+
+    override suspend fun commentMatch(matchId: String, comment: String): CommentDto {
+        return matchService.commentMatch(matchId, comment)
     }
 }
