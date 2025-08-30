@@ -1,10 +1,12 @@
 package com.match_intel.android.ui
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.match_intel.android.ui.screen.LoginScreen
+import com.match_intel.android.ui.screen.MatchStatsScreen
 import com.match_intel.android.ui.screen.RegisterScreen
 import com.match_intel.android.viewmodel.AuthViewModel
 
@@ -35,8 +37,17 @@ fun NavGraph(authViewModel: AuthViewModel) {
                     navController.navigate("login") {
                         popUpTo("main") { inclusive = true }
                     }
-                }
+                },
+                navController = navController
             )
         }
+        composable("matchDetails/{matchId}") { backStackEntry ->
+            val matchId = backStackEntry.arguments?.getString("matchId") ?: return@composable
+            MatchStatsScreen(
+                viewModel = hiltViewModel(),
+                matchId = matchId
+            )
+        }
+
     }
 }

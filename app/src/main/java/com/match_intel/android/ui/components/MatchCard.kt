@@ -35,6 +35,7 @@ import com.match_intel.android.viewmodel.HomeViewModel
 fun MatchCard(
     match: MatchDto,
     onLikeClick: (String) -> Unit,
+    onClick: () -> Unit,
     viewModel: HomeViewModel
 ) {
 
@@ -44,6 +45,7 @@ fun MatchCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
+            .clickable { onClick() }
     ) {
         Column(
             modifier = Modifier
@@ -101,10 +103,8 @@ fun MatchCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            match.player1Efficiency?.let { score1 ->
-                match.player2Efficiency?.let { score2 ->
-                    CenteredMatchProgressBar(score1, score2)
-                }
+            if (match.player1Efficiency != 0 || match.player2Efficiency != 0) {
+                CenteredMatchProgressBar(match.player1Efficiency, match.player2Efficiency)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

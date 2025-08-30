@@ -52,4 +52,7 @@ interface MatchService {
         @Path("matchId") matchId: String,
         @Query("comment") comment: String
     ): CommentDto
+
+    @GET("matches/{matchId}")
+    suspend fun getMatchById(@Path("matchId") matchId: String): MatchDto
 }

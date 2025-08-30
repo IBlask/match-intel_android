@@ -44,4 +44,8 @@ class MatchRepositoryImpl @Inject constructor (
     override suspend fun commentMatch(matchId: String, comment: String): CommentDto {
         return matchService.commentMatch(matchId, comment)
     }
+
+    override suspend fun getMatchById(matchId: String): MatchDto {
+        return matchService.getMatchById(matchId)
+    }
 }

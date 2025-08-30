@@ -14,4 +14,5 @@ interface MatchRepository {
     suspend fun getLikesList(matchId: String): List<UserDto>
     suspend fun getCommentsList(matchId: String): List<CommentDto>
     suspend fun commentMatch(matchId: String, comment: String): CommentDto
+    suspend fun getMatchById(matchId: String): MatchDto
 }

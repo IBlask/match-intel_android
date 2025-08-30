@@ -12,7 +12,10 @@ import com.match_intel.android.ui.components.MatchCard
 import com.match_intel.android.viewmodel.HomeViewModel
 
 @Composable
-fun HomePage(homeViewModel: HomeViewModel = hiltViewModel()) {
+fun HomePage(
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onMatchClick: (String) -> Unit
+) {
     val matches by homeViewModel.matches.collectAsState()
     Log.d("HomeViewModel", "Loaded matches: $matches")
 
@@ -23,6 +26,7 @@ fun HomePage(homeViewModel: HomeViewModel = hiltViewModel()) {
             MatchCard(
                 match = match,
                 onLikeClick = { id -> homeViewModel.onLikeClick(id) },
+                onClick = { onMatchClick(match.id) },
                 viewModel = homeViewModel
             )
         }

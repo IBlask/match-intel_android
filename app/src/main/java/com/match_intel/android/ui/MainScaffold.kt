@@ -42,12 +42,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.match_intel.android.R
 import com.match_intel.android.ui.page.HomePage
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainScaffold(onLogout: () -> Unit) {
+fun MainScaffold(
+    onLogout: () -> Unit,
+    navController: NavController
+) {
     val pages = listOf(
         Pair("Clubs", Icons.Outlined.Place),
         Pair("Home", Icons.Outlined.Home),
@@ -157,7 +161,11 @@ fun MainScaffold(onLogout: () -> Unit) {
             ) {
                 when(page) {
                     0 -> Text("Clubs Page")
-                    1 -> HomePage()
+                    1 -> HomePage(
+                        onMatchClick = { matchId ->
+                            navController.navigate("matchDetails/$matchId")
+                        }
+                    )
                     2 -> Text("Tournaments Page")
                 }
             }
