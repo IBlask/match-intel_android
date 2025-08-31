@@ -16,7 +16,8 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Place
-import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -39,12 +40,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.match_intel.android.R
 import com.match_intel.android.ui.page.HomePage
+import com.match_intel.android.util.getUsernameFromJwt
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,6 +55,10 @@ fun MainScaffold(
     onLogout: () -> Unit,
     navController: NavController
 ) {
+    val context = LocalContext.current
+    val username = getUsernameFromJwt(context)
+    var expanded by remember { mutableStateOf(false) }
+
     val pages = listOf(
         Pair("Clubs", Icons.Outlined.Place),
         Pair("Home", Icons.Outlined.Home),
@@ -89,17 +96,47 @@ fun MainScaffold(
                             errorIndicatorColor = Color.Transparent
                         )
                     )
-                    IconButton(
-                        onClick = { /* TODO: Open profile/settings */ },
-                        modifier = Modifier.padding(4.dp)
+
+                    Box(
+                        contentAlignment = Alignment.TopEnd
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.AccountCircle,
-                            contentDescription = "My Profile",
-                            modifier = Modifier.size(48.dp)
-                        )
+                        IconButton(
+                            onClick = { expanded = true },
+                            modifier = Modifier.padding(4.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AccountCircle,
+                                contentDescription = "My Profile",
+                                modifier = Modifier.size(48.dp)
+                            )
+                        }
+
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("My Profile") },
+                                onClick = {
+                                    expanded = false
+                                    navController.navigate("userDetails/$username")
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Following Requests") },
+                                onClick = { expanded = false }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Logout") },
+                                onClick = {
+                                    expanded = false
+                                    onLogout()
+                                }
+                            )
+                        }
                     }
                 }
+
                 HorizontalDivider()
             }
         },

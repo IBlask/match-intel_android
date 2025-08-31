@@ -5,10 +5,13 @@ import android.content.SharedPreferences
 import com.match_intel.android.BuildConfig
 import com.match_intel.android.data.api.AuthService
 import com.match_intel.android.data.api.MatchService
+import com.match_intel.android.data.api.UserService
 import com.match_intel.android.data.repository.AuthRepository
 import com.match_intel.android.data.repository.AuthRepositoryImpl
 import com.match_intel.android.data.repository.MatchRepository
 import com.match_intel.android.data.repository.MatchRepositoryImpl
+import com.match_intel.android.data.repository.UserRepository
+import com.match_intel.android.data.repository.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -67,6 +70,12 @@ object NetworkModule {
     fun provideAuthService(): AuthService {
         return AuthService.create()
     }
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
+    }
 }
 
 @Module
@@ -90,4 +99,13 @@ abstract class MatchRepositoryModule {
         matchRepositoryImpl: MatchRepositoryImpl
     ): MatchRepository
 
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModule {
+    @Binds
+    abstract fun bindUserRepository(
+        impl: UserRepositoryImpl
+    ): UserRepository
 }

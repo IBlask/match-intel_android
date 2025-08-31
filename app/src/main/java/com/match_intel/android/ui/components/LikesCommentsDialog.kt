@@ -145,7 +145,7 @@ fun LikesCommentsDialog
                             LazyColumn(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .weight(1f),
+                                    .heightIn(max = screenHeightDp * 0.4f), // Limit height so input is visible
                                 contentPadding = PaddingValues(bottom = 8.dp)
                             ) {
                                 items(commentsList) { comment ->
@@ -169,43 +169,42 @@ fun LikesCommentsDialog
                                     }
                                 }
                             }
+                        }
 
-                            // New comment input
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .imePadding()
-                                    .imeNestedScroll(),
-                                horizontalArrangement = Arrangement.SpaceBetween
-                            ) {
-                                TextField(
-                                    value = newComment,
-                                    onValueChange = { newComment = it },
-                                    placeholder = { Text("Write a comment...") },
-                                    modifier = Modifier.weight(1f)
-                                )
-                                IconButton(
-                                    onClick = {
-                                        if (newComment.isNotBlank()) {
-                                            viewModel.commentMatch(matchId, newComment)
-                                            newComment = ""
-                                            onDismiss()
-                                            Toast.makeText(context, "Sent!", Toast.LENGTH_SHORT)
-                                                .show()
-                                        } else {
-                                            Toast.makeText(
-                                                context,
-                                                "Comment cannot be empty",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                        }
+                        // New comment input always visible under the comments list
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .imePadding()
+                                .padding(top = 8.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            TextField(
+                                value = newComment,
+                                onValueChange = { newComment = it },
+                                placeholder = { Text("Write a comment...") },
+                                modifier = Modifier.weight(1f)
+                            )
+                            IconButton(
+                                onClick = {
+                                    if (newComment.isNotBlank()) {
+                                        viewModel.commentMatch(matchId, newComment)
+                                        newComment = ""
+                                        Toast.makeText(context, "Sent!", Toast.LENGTH_SHORT).show()
+                                        onDismiss()
+                                    } else {
+                                        Toast.makeText(
+                                            context,
+                                            "Comment cannot be empty",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Default.Send,
-                                        contentDescription = "Send"
-                                    )
                                 }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Default.Send,
+                                    contentDescription = "Send"
+                                )
                             }
                         }
                     }

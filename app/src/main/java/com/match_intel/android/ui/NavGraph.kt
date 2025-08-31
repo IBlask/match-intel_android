@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.match_intel.android.ui.screen.LoginScreen
 import com.match_intel.android.ui.screen.MatchStatsScreen
 import com.match_intel.android.ui.screen.RegisterScreen
+import com.match_intel.android.ui.screen.UserDetailsScreen
 import com.match_intel.android.viewmodel.AuthViewModel
 
 @Composable
@@ -48,6 +49,14 @@ fun NavGraph(authViewModel: AuthViewModel) {
                 matchId = matchId
             )
         }
-
+        composable("userDetails/{username}") { backStackEntry ->
+            val username = backStackEntry.arguments?.getString("username") ?: return@composable
+            UserDetailsScreen(
+                username = username,
+                viewModel = hiltViewModel(),
+                homeViewModel = hiltViewModel(),
+                navController = navController
+            )
+        }
     }
 }
