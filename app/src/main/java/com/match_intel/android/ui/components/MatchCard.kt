@@ -104,7 +104,7 @@ fun MatchCard(
             Spacer(modifier = Modifier.height(8.dp))
 
             if (match.player1Efficiency != 0 || match.player2Efficiency != 0) {
-                CenteredMatchProgressBar(match.player1Efficiency, match.player2Efficiency)
+                CenteredMatchProgressBar(match.player1Efficiency, match.player2Efficiency, true)
             }
 
             Spacer(modifier = Modifier.height(16.dp))

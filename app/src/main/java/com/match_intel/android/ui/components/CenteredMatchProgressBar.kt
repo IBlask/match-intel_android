@@ -29,7 +29,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CenteredMatchProgressBar(
     scoreA: Int,
-    scoreB: Int
+    scoreB: Int,
+    shouldAnimate: Boolean
 ) {
     val modifier = Modifier
         .fillMaxWidth()
@@ -43,14 +44,23 @@ fun CenteredMatchProgressBar(
         startB = scoreB.toFloat() / 100
     }
 
-    val animatedPercentA by animateFloatAsState(
-        targetValue = startA,
-        animationSpec = tween(1200, easing = LinearOutSlowInEasing)
-    )
-    val animatedPercentB by animateFloatAsState(
-        targetValue = startB,
-        animationSpec = tween(1200, easing = LinearOutSlowInEasing)
-    )
+    val animatedPercentA = if (shouldAnimate) {
+        animateFloatAsState(
+            targetValue = startA,
+            animationSpec = tween(800, easing = LinearOutSlowInEasing)
+        ).value
+    } else {
+        startA
+    }
+
+    val animatedPercentB = if (shouldAnimate) {
+        animateFloatAsState(
+            targetValue = startB,
+            animationSpec = tween(800, easing = LinearOutSlowInEasing)
+        ).value
+    } else {
+        startB
+    }
 
     BoxWithConstraints(
         modifier = modifier

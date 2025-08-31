@@ -28,6 +28,7 @@ import com.match_intel.android.data.dto.MatchStatsDto
 import com.match_intel.android.ui.components.CenteredMatchProgressBar
 import com.match_intel.android.viewmodel.MatchDetailsUiState
 import com.match_intel.android.viewmodel.MatchStatsViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun MatchStatsScreen(
@@ -37,7 +38,10 @@ fun MatchStatsScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(matchId) {
-        viewModel.loadMatch(matchId)
+        while (true) {
+            viewModel.loadMatch(matchId)
+            delay(20_000)
+        }
     }
 
     when (uiState) {
@@ -210,7 +214,7 @@ private fun StatsBySet(score: String, stats: MatchStatsDto?, set: Int, isSetFini
                 HorizontalDivider(modifier = Modifier.padding(horizontal = 8.dp))
 
                 Text("Efficiency", style = MaterialTheme.typography.titleMedium)
-                CenteredMatchProgressBar(player1Efficiency, player2Efficiency)
+                CenteredMatchProgressBar(player1Efficiency, player2Efficiency, false)
 
                 Spacer(modifier = Modifier.height(8.dp))
             }
